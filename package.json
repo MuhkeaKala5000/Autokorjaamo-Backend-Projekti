@@ -1,0 +1,28 @@
+{
+  "name": "autokorjaamo-backend-projekti",
+  "version": "1.0.0",
+  "description": "Ryhmä/Soolo 21",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuhkeaKala5000/Autokorjaamo-Backend-Projekti.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MuhkeaKala5000/Autokorjaamo-Backend-Projekti/issues"
+  },
+  "homepage": "https://github.com/MuhkeaKala5000/Autokorjaamo-Backend-Projekti#readme",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.13.3"
+  }
+}
