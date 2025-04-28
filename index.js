@@ -25,8 +25,13 @@ database.once('connected', () => {
 
 
 const app = express();
-
 app.use(express.json());
+
+app.engine('handlebars',ExpressHandlebars.engine({
+    defaultLayout: 'main'
+}));
+
+app.set('view engine','handlebars');
 
 app.use("/mekaanikot", require("./routes/mekaanikotRoute"));
 app.use("/palvelut", require("./routes/palvelutRoute"));
