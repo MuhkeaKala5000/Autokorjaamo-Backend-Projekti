@@ -1,0 +1,8 @@
+<h2>Palvelumme</h2>
+<p>Tässä näkyy kaikki palvelut mitä tarjoamme.</p>
+
+<ul>
+    {{#each services}}
+        <li>{{this.nimi}} – {{this.hinta_euro}}€ (kesto: {{this.kesto_min}} min)</li>
+    {{/each}}
+</ul>
