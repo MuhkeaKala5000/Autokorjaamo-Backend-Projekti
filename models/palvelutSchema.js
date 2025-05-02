@@ -7,4 +7,4 @@ const palvelutSchema = new mongoose.Schema({
     kuvaus: {type:String, required: true}
 });
 
-module.exports = mongoose.model('Palvelut', palvelutSchema, 'palvelut');
+module.exports = mongoose.model('Palvelu', palvelutSchema, 'palvelut');

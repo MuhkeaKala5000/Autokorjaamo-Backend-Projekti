@@ -2,13 +2,34 @@
     font-family: Verdana, Tahoma, sans-serif;
 }
 
+html, body{
+    display: flex;    
+    flex-direction: column;
+}
+
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+.main-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+    justify-content: space-evenly;
+}
+
 footer{
     background-color: #1E4FC2;
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: space-evenly;
-    padding: 50px;
+    text-align: center;
+    padding: 1rem;
 }
 
 .column{
@@ -22,31 +43,27 @@ header{
     text-align: center;
 }
 
-nav ul {
+nav ul{
     list-style: none;
     padding: 0;
     margin: 10px 0 0;
 }
 
-nav ul li {
+nav ul li{
     display: inline;
     margin-right: 20px;
 }
 
-nav ul li a {
+nav ul li a{
     color: white;
     text-decoration: none;
 }
 
-nav ul li a:hover {
+nav ul li a:hover{
     text-decoration: underline;
 }
 
-footer p {
-    margin: 0;
-}
-
-ul {
+ul{
     list-style: none;
     padding: 0;
 }

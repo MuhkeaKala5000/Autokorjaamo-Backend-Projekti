@@ -1,7 +1,15 @@
+<div class="main-content">
+
 <h2>Kirjaudu sisään</h2>
 
-<form action="/login" method="POST">
-  <label for="ticket">Enter your Ticket ID:</label>
-  <input type="text" name="ticketId" required />
-  <button type="submit">Check</button>
+<form action='/login' method='POST'>
+  <label for='email'>Sähköpostiosoite</label>
+  <input type="email" id="email" name="email" placeholder="Sähköposti" required>
+
+  <label for='ticketId'>Varauskoodi</label>
+  <input type="text" id="ticketId" name="ticketId" placeholder="Varauskoodi" required>
+
+  <button type="submit">Kirjaudu</button>
 </form>
+
+</div>

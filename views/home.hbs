@@ -1,11 +1,11 @@
-<h1>Tervetuloa Autokorjaamolle!</h1>
+<div class="main-content">
+<h1>Tervetuloa Kaara Korjaamon nettisivuille!</h1>
 
-<p>Varaa aika huoltoon tai tarkista palvelumme.</p>
-
-<nav>
-    <ul>
-        <li><a href="/mekaanikot">Katso Mekaanikot</a></li>
-        <li><a href="/palvelut">Palvelut</a></li>
-        <li><a href="/varatutajat">Varatut Ajat</a></li>
-    </ul>
-</nav>
+<p>Varaa aika huoltoon tai tarkista tarkistele tilaustasi.</p>
+<p>Tässä näkyy kaikki palvelut mitä tarjoamme.</p>
+  <ul>
+    {{#each services}}
+      <li>{{this.nimi}} – {{this.hinta_euro}}€ (kesto: {{this.kesto_min}} min)</li>
+    {{/each}}
+  </ul>
+</div>

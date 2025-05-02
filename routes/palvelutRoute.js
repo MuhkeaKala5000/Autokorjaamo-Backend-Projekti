@@ -1,5 +1,5 @@
 const express = require('express');
-const router=express.Router()
+const router = express.Router()
 
 const Palvelu = require('../models/palvelutSchema');
 
@@ -8,6 +8,5 @@ router.get('/', async (req, res) => {
     console.log('Meidän palvelumme', palvelut);
     res.json(palvelut);
 });
-
 
 module.exports = router;

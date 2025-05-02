@@ -1,0 +1,21 @@
+<div class="main-content">
+<h1>Muokkaa varausta</h1>
+
+<form action="/admin/bookings/{{booking._id}}/edit" method="POST">
+  <p>Nimi: {{booking.asiakas_nimi}}</p>
+  <p>Sähköposti: {{booking.asiakas_email}}</p>
+  <p>Palvelu: {{booking.palvelu_id.nimi}} (ei muutettavissa)</p>
+
+  <label for="mechanic_id">Mekaanikko:</label>
+  <select name="mechanic_id" id="mechanic_id" required>
+    {{#each mechanics}}
+      <option value="{{this._id}}" {{#ifEquals this._id ../booking.mekaanikko_id._id}}selected{{/ifEquals}}>{{this.nimi}}</option>
+    {{/each}}
+  </select>
+
+  <label for="datetime">Ajankohta:</label>
+  <input type="datetime-local" name="datetime" required value="{{formatDateForInput booking.varattu_aika}}">
+
+  <button type="submit">Tallenna muutokset</button>
+</form>
+</div>

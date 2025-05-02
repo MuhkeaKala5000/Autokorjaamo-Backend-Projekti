@@ -1,1 +1,9 @@
-<h2>Your Appointment</h2>
+<div class="main-content">
+<h1>Varauksesi tiedot:</h1>
+<p>Nimi: {{booking.asiakas_nimi}}</p>
+<p>Sähköposti: {{booking.asiakas_email}}</p>
+<p>Palvelu: {{booking.palvelu_id.nimi}}</p>
+<p>Mekaanikko: {{booking.mekaanikko_id.nimi}}</p>
+<p>Aika: {{formatDateForInput booking.varattu_aika}}</p>
+<p>Kesto: {{booking.palvelun_kesto}} min</p>
+</div>

@@ -1,0 +1,38 @@
+<div class="main-content">
+<h1>Kaikki varaukset</h1>
+
+<table border='1' cellpadding='10'>
+  <thead>
+    <tr>
+      <th>Nimi</th>
+      <th>Sähköposti</th>
+      <th>Palvelu</th>
+      <th>Mekaanikko</th>
+      <th>Ajankohta</th>
+      <th>Kesto</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each bookings}}
+      <tr>
+        <td>{{this.asiakas_nimi}}</td>
+        <td>{{this.asiakas_email}}</td>
+        <td>{{this.palvelu_id.nimi}}</td>
+        <td>{{this.mekaanikko_id.nimi}}</td>
+        <td>{{formatDateForInput this.varattu_aika}}</td>
+        <td>{{this.palvelun_kesto}} min</td>
+          <td>
+    <form action='/admin/bookings/{{this._id}}/delete' method='POST' onsubmit='return confirm('Poistetaanko varaus?');'>
+      <button type='submit'>Poista</button>
+    </form>
+    <form action='/admin/bookings/{{this._id}}/edit' method='GET'>
+      <button type='submit'>Muokkaa varausta</button>
+    </form>
+  </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<a href='/logout'>Kirjaudu ulos</a>
+</div>
