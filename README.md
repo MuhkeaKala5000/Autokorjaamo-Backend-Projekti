@@ -21,13 +21,16 @@ Backend projekti koulua varten. Tarkoituksena luoda autokorjaamolle varaus API j
    cd
 
 2. **Install dependencies**
+    ```bash
     npm install express mongoose express-session express-handlebars @handlebars/allow-prototype-access handlebars uuid doten
 
 3. **Lisää MongoDB yhteys**
+    ```bash
     .env tiedostoon
     URI=<MongoDB connection string>
 
 4. **Run the app**
+    ```bash
     npm start
 
 ## Made with
