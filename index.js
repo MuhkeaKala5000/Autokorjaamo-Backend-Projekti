@@ -4,9 +4,9 @@ const mongoString = process.env.URI;
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
-const {v4: uuidv4} = require('uuid');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const Handlebars = require('handlebars');
+const generateTicketId = require('./utils/generateTicketId');
 
 // ——————————————————————————————
 //            Mallit
@@ -22,22 +22,19 @@ mongoose.connect(mongoString);
 const database = mongoose.connection;
 
 database.on('error', (error) => {
-    console.log(error)
-})
+  console.error('Tietokantavirhe:', error);
+});
 
 database.once('connected', () => {
-  console.log('Database Connected');
-})
+console.log('Yhdistetty tietokantaan!');
+});
+
 
 
 // ——————————————————————————————
 //           App config
 // ——————————————————————————————
 const app = express();
-
-app.use('/mekaanikot', require('./routes/mekaanikotRoute'));
-app.use('/palvelut', require('./routes/palvelutRoute'));
-app.use('/varatutajat', require('./routes/varatutajatRoute'));
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
@@ -48,6 +45,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+app.use('/mekaanikot', require('./routes/mekaanikotRoute'));
+app.use('/palvelut', require('./routes/palvelutRoute'));
+app.use('/varatutajat', require('./routes/varatutajatRoute'));
 
 // ——————————————————————————————
 //       Handlebars config
@@ -68,7 +69,7 @@ const hbs = exphbs.create({
       const day = ('0' + d.getDate()).slice(-2);
       const hours = ('0' + d.getHours()).slice(-2);
       const minutes = ('0' + d.getMinutes()).slice(-2);
-      return `${year}-${month}-${day}T${hours}:${minutes}`;
+      return `${year}.${month}.${day} Klo: ${hours}:${minutes}`;
     },
     ifEquals: function (arg1, arg2, options) {
       return (arg1.toString() === arg2.toString()) ? options.fn(this) : options.inverse(this);
@@ -87,10 +88,10 @@ app.set('view engine', 'hbs');
 app.get('/', async (req, res) => {
   try {
     const services = await Palvelu.find();
-    res.render('home', { services });
+    res.render('home', {services});
   } catch (err) {
     console.error(err);
-    res.status(500).send('Palvelujen hakeminen epäonnistui');
+    res.status(500).render('error', {title: 'Virhe', message: 'Palvelujen hakeminen epäonnistui'});
   }
 });
 
@@ -98,11 +99,11 @@ app.get('/appointmentBooker', async (req, res) => {
   try {
     const mechanics = await Mekaanikko.find();
     const services = await Palvelu.find();
-    res.render('appointmentBooker', { mechanics, services });
+    res.render('appointmentBooker', {mechanics, services});
     } 
   catch (error) {
     console.error(error);
-    res.status(500).send('Error fetching mechanics or services');
+    res.status(500).render('error', {title: 'Virhe', message: 'Palvelujen hakeminen epäonnistui'});
     }
 });
 
@@ -112,7 +113,7 @@ app.get('/varatutajat', async (req, res) => {
     res.json(bookings);
     } 
   catch (err) {
-    res.status(500).send('Error fetching bookings');
+    res.status(500).render('error', {title: 'Virhe', message: 'Varauksien hakeminen epäonnistui'});
     }
 });
 
@@ -122,11 +123,11 @@ app.get('/adminBookings', async (req, res) => {
     .populate('palvelu_id')
     .populate('mekaanikko_id')
     .sort({ varattu_aika: -1 });
-    res.render('adminBookings', { bookings });
+    res.render('adminBookings', {bookings});
     } 
   catch (err) {
     console.error(err);
-    res.status(500).send('Tietojen hakeminen epäonnistui.');
+    res.status(500).render('error', {title: 'Virhe', message: 'Tietojen hakeminen epäonnistui'});
     }
 });
 
@@ -135,7 +136,7 @@ app.get('/adminlogin', (req, res) => {
 res.render('adminlogin');
 });
 
-app.get('/admin/bookings', async (req, res) => {
+app.get('/adminBookings', async (req, res) => {
   if (!req.session.isAdmin) {
     return res.status(403).send("Pääsy evätty. Kirjaudu sisään adminina.");
     }
@@ -145,7 +146,7 @@ app.get('/admin/bookings', async (req, res) => {
   res.render('adminBookings', { bookings });
 });
 
-app.get('/admin/bookings/:id/edit', async (req, res) => {
+app.get('/adminBookings:id/edit', async (req, res) => {
   if (!req.session.isAdmin) {
     return res.status(403).send("Ei oikeuksia.");
     }
@@ -156,11 +157,11 @@ app.get('/admin/bookings/:id/edit', async (req, res) => {
 
     const mechanics = await Mekaanikko.find();
 
-    res.render('editBooking', { booking, mechanics });
+    res.render('editBooking', {booking, mechanics});
     } 
   catch (err) {
     console.error(err);
-    res.status(500).send('Muokkausnäkymää ei voitu ladata.');
+    res.status(500).render('error', {title: 'Virhe', message: 'Muokkausnäkymää ei voitu ladata'});
     }
 });
 
@@ -184,17 +185,17 @@ app.get('/login', (req, res) => {
       const { name, email, service_id, mechanic_id, datetime } = req.body;
   
       if (!name || !email || !service_id || !mechanic_id || !datetime) {
-        return res.status(400).send('Kaikki kentät ovat pakollisia.');
+        return res.status(400).render('error', { title: 'Virhe', message: 'Kaikki kentät ovat pakollisia.' });
       }
   
       const selectedService = await Palvelu.findById(service_id);
       if (!selectedService) {
-        return res.status(404).send('Palvelua ei löytynyt.');
+        return res.status(404).render('error', { title: 'Virhe', message: 'Palvelua ei löytynyt.' });
       }
   
       const varausAika = new Date(datetime);
       if (isNaN(varausAika.getTime())) {
-        return res.status(400).send('Päivämäärä tai aika on virheellinen.');
+        return res.status(400).render('error', { title: 'Virhe', message: 'Päivämäärä tai aika on virheellinen.' });
       }
   
       const duration = selectedService.kesto_min;
@@ -209,7 +210,7 @@ app.get('/login', (req, res) => {
         mekaanikko_id: mechanic_id,
         varattu_aika: varausAika,
         palvelun_kesto: duration,
-        varaus_id: uuidv4()
+        varaus_id: generateTicketId()
       });
   
       await newVaraus.save();
@@ -222,8 +223,8 @@ app.get('/login', (req, res) => {
   
     } 
     catch (err) {
-      console.error('Booking error:', err);
-      return res.status(500).send('Varaaminen epäonnistui. Yritä uudelleen.');
+      console.error('Varaaminen epäonnistui:', err);
+      res.status(500).render('error', {title: "Palvelinvirhe", message: "Jokin meni pieleen. Yritä myöhemmin uudelleen."});
     }
 });
 
@@ -231,20 +232,20 @@ app.post('/adminlogin', (req, res) => {
   const {username, password} = req.body;
   if (username === 'Masa-admin' && password === 'salasana123') {
     req.session.isAdmin = true;
-    return res.redirect('/admin/bookings');
+    return res.redirect('/adminBookings');
   } 
   else {
-    return res.send('Väärä käyttäjänimi tai salasana.');
+    return res.status(401).render('error', {title: 'Kirjautumisvirhe', message: 'Väärä käyttäjänimi tai salasana. Yritä uudelleen.'});
   }
 });
 
-app.post('/admin/bookings/:id/delete', async (req, res) => {
+app.post('/adminBookings/:id/delete', async (req, res) => {
   if (!req.session.isAdmin) return res.status(403).send("Ei oikeuksia.");
   await Varaus.findByIdAndDelete(req.params.id);
-  res.redirect('/admin/bookings');
+  res.redirect('/adminBookings');
 });
 
-app.post('/admin/bookings/:id/edit', async (req, res) => {
+app.post('/adminBookings/:id/edit', async (req, res) => {
   if (!req.session.isAdmin) return res.status(403).send("Ei oikeuksia.");
 
   const { datetime, mechanic_id } = req.body;
@@ -254,7 +255,7 @@ app.post('/admin/bookings/:id/edit', async (req, res) => {
     varattu_aika: fullDateTime,
     mekaanikko_id: mechanic_id
   });
-  res.redirect('/admin/bookings');
+  res.redirect('/adminBookings');
 });
 
 app.post('/login', async (req, res) => {
@@ -266,13 +267,13 @@ app.post('/login', async (req, res) => {
     .populate('mekaanikko_id');
 
     if (!booking) {
-      return res.send('Varausta ei löytynyt. Tarkista sähköposti ja varauskoodi.');
+      return res.status(404).render('error', { title: 'Virhe', message: 'Varausta ei löytynyt. Tarkista sähköposti ja varauskoodi.' });
     }
 
     res.render('yourAppointment', { booking });
   } 
   catch (err) {
-    res.status(500).send('Virhe tarkistettaessa varausta.');
+    res.status(500).render('error', {title: 'Virhe', message: 'Virhe tarkistettaessa varausta.'});
   }
 });
 

@@ -10,6 +10,7 @@
       <th>Mekaanikko</th>
       <th>Ajankohta</th>
       <th>Kesto</th>
+      <th>Muokkaa</th>
     </tr>
   </thead>
   <tbody>
@@ -21,11 +22,11 @@
         <td>{{this.mekaanikko_id.nimi}}</td>
         <td>{{formatDateForInput this.varattu_aika}}</td>
         <td>{{this.palvelun_kesto}} min</td>
-          <td>
-    <form action='/admin/bookings/{{this._id}}/delete' method='POST' onsubmit='return confirm('Poistetaanko varaus?');'>
+  <td>
+    <form action='/adminBookings/{{this._id}}/delete' method='POST' onsubmit='return confirm('Poistetaanko varaus?');'>
       <button type='submit'>Poista</button>
     </form>
-    <form action='/admin/bookings/{{this._id}}/edit' method='GET'>
+    <form action='/adminBookings/{{this._id}}/edit' method='GET'>
       <button type='submit'>Muokkaa varausta</button>
     </form>
   </td>

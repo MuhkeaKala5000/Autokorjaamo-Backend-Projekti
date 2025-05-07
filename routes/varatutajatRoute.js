@@ -4,7 +4,6 @@ const router = express.Router();
 const Mekaanikko = require('../models/mekaanikotSchema');
 const Palvelu = require('../models/palvelutSchema');
 const Varaus = require('../models/varatutajatSchema');
-const {v4: uuidv4} = require('uuid');
 
 router.post('/', async (req, res) => {
     try {
@@ -42,7 +41,7 @@ router.post('/', async (req, res) => {
         mekaanikko_id,
         varattu_aika: varaus_aika,
         palvelun_kesto,
-        varaus_id: uuidv4()
+        varaus_id: ticketId
       });
   
       await uusi_varaus.save();
