@@ -2,9 +2,10 @@
     font-family: Verdana, Tahoma, sans-serif;
 }
 
-html, body{
-    display: flex;    
-    flex-direction: column;
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
 }
 
 .page-wrapper {
@@ -26,10 +27,23 @@ html, body{
 }
 
 footer{
-    background-color: #1E4FC2;
+    background-color: #003366;
     color: white;
     text-align: center;
     padding: 1rem;
+}
+
+footer a img {
+    width: 40px;
+    height: 40px;
+    margin: 0 10px;
+    transition: transform 0.2s;
+}
+
+footer a img:focus,
+footer a img:hover {
+    transform: scale(1.1);
+    outline: 3px solid #ffcc00;
 }
 
 .column{
@@ -37,7 +51,7 @@ footer{
 }
 
 header{
-    background-color: #1E4FC2;
+    background-color: #003366;
     color: white;
     padding: 15px;
     text-align: center;
@@ -63,6 +77,13 @@ nav ul li a:hover{
     text-decoration: underline;
 }
 
+nav a:focus {
+    outline: 3px solid #ffcc00;
+    color: white;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
 ul{
     list-style: none;
     padding: 0;
@@ -77,10 +98,10 @@ ul{
     border: 1px solid #f5c6cb;
     border-radius: 8px;
   }
-  .error-page h1 {
+.error-page h1 {
     font-size: 2rem;
-  }
-  .error-page a {
+}
+.error-page a {
     display: inline-block;
     margin-top: 20px;
     text-decoration: none;
@@ -88,7 +109,22 @@ ul{
     padding: 10px 20px;
     border-radius: 5px;
     color: #721c24;
-  }
-  .error-page a:hover {
+}
+.error-page a:hover {
     background-color: #f1b0b7;
-  }
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    z-index: 1000;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}

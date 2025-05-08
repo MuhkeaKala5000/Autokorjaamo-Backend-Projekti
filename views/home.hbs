@@ -2,10 +2,24 @@
 <h1>Tervetuloa Kaara Korjaamon nettisivuille!</h1>
 
 <p>Varaa aika huoltoon tai tarkista tarkistele tilaustasi.</p>
-<p>Tässä näkyy kaikki palvelut mitä tarjoamme.</p>
-  <ul>
+
+<table>
+  <caption>Tarjoamamme palvelut</caption>
+  <thead>
+    <tr>
+      <th>Palvelu</th>
+      <th>Hinta</th>
+      <th>Kesto</th>
+    </tr>
+  </thead>
+  <tbody>
     {{#each services}}
-      <li>{{this.nimi}} – {{this.hinta_euro}}€ (kesto: {{this.kesto_min}} min)</li>
+    <tr>
+      <td>{{this.nimi}}</td>
+      <td>{{this.hinta_euro}}€</td>
+      <td>{{this.kesto_min}} min</td>
+    </tr>
     {{/each}}
-  </ul>
+  </tbody>
+</table>
 </div>

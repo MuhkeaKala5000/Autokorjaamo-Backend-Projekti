@@ -3,7 +3,7 @@
 <section role="alert" aria-live="assertive">
   <p>Kiitos ajan varaamisesta, {{name}}!</p>
 
-  <p><strong>Varauskoodisi on:</strong> {{ticketCode}}</p>
+  <p><strong>Varauskoodisi on:</strong> <input type="text" value="{{ticketCode}}" readonly aria-label="Varauskoodi" onclick="this.select();"></p>
 
   <p>
     Lähetimme vahvistuksen sähköpostiin: <strong>{{email}}</strong>.<br>
@@ -18,5 +18,5 @@
   <p>Vikatilanteissa olethan meihin yhteydessä puhelimitse tai sähköpostilla.</p>
 </section>
 
-<a href='/' class="button">Takaisin etusivulle</a>
+<a href='/' class="button" aria-label="Palaa takaisin etusivulle">Takaisin etusivulle</a>
 </div>

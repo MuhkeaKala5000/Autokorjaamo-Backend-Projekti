@@ -4,17 +4,17 @@
 <form action='/appointmentBooker' method='POST' aria-labelledby="booking-heading">
   <div>
     <label for='asiakas_nimi'>Nimi:</label>
-    <input type='text' id='asiakas_nimi' name='name' required autocomplete="name">
+    <input type='text' id='asiakas_nimi' name='name' required aria-required="true">
   </div>
 
   <div>
     <label for='asiakas_email'>Sähköposti:</label>
-    <input type='email' id='asiakas_email' name='email' required autocomplete="email">
+    <input type='email' id='asiakas_email' name='email' required aria-required="true">
   </div>
 
   <div>
-    <label for='service_id'>Palvelu:</label>
-    <select name='service_id' id='service_id' required>
+    <label for='service_id'>Palvelu: <span aria-hidden="true">
+    <select name='service_id' id='service_id' required aria-required="true">
       <option disabled selected value="">Valitse palvelu</option>
       {{#each services}}
         <option value='{{this._id}}'>
@@ -22,21 +22,28 @@
         </option>
       {{/each}}
     </select>
+    </span>
+    </label>
   </div>
 
   <div>
-    <label for='mechanic_id'>Mekaanikko:</label>
-    <select name='mechanic_id' id='mechanic_id' required>
+    <label for='mechanic_id'>Mekaanikko: <span aria-hidden="true">
+    <select name='mechanic_id' id='mechanic_id' required aria-required="true">
       <option disabled selected value="">Valitse mekaanikko</option>
       {{#each mechanics}}
         <option value='{{this._id}}'>{{this.nimi}}</option>
       {{/each}}
     </select>
+    </span>
+    </label>
   </div>
 
   <div>
-    <label for='varattu_aika'>Aika:</label>
-    <input type='datetime-local' id='varattu_aika' name='datetime' required>
+    <label for='varattu_aika'>Aika: <span aria-hidden="true">
+    <input type='datetime-local' id='varattu_aika' name='datetime' required aria-describedby="datetime-hint">
+    <p id="datetime-hint" class="visually-hidden">Valitse päivämäärä ja kellonaika (vuosi, kuukausi, päivä ja aika).</p>
+    </span>
+    </label>
   </div>
 
   <button type='submit'>Varaa aika</button>
